@@ -1,0 +1,27 @@
+<app-sidebar></app-sidebar>
+<div class="p-8 sm:ml-64">
+    <p>board-user works!</p>
+    <!-- <div class="flex flex-row"> -->
+        <div class="basis-6/8">
+            <div class="content-center">
+                <div class="example-container">
+                    <h2>To do</h2>
+                    <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="todo"
+                        [cdkDropListConnectedTo]="[doneList]" class="example-list" (cdkDropListDropped)="drop($event)">
+                        <div class="example-box" *ngFor="let item of todo" cdkDrag [ngClass]="'example-box-todo'">
+                            {{item}}</div>
+                    </div>
+                </div>
+
+                <div class="example-container">
+                    <h2>Done</h2>
+                    <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="done"
+                        [cdkDropListConnectedTo]="[todoList]" class="example-list" (cdkDropListDropped)="drop($event)">
+                        <div class="example-box" *ngFor="let item of done" cdkDrag [cdkDragDisabled]="true"
+                            [ngClass]="'example-box-done'">{{item}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!-- </div> -->
+</div>

@@ -1,0 +1,51 @@
+<aside class="fixed top-0 left-0 w-64 h-full bg-gray-800 text-white" aria-label="Sidenav">
+    <div class="overflow-y-auto py-5 px-3 h-full">
+        <ul class="space-y-2">
+            <li>
+                <button (click)="openBoards()"
+                    class="flex items-center p-2 text-base font-normal rounded-lg hover:bg-gray-700">
+                    <span>My boards</span>
+                    <svg class="w-6 h-6 ml-2" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                </button>
+                <ul *ngIf="isBoardsOpen" class="ml-4">
+                    <li><a href="#" class="block p-2 text-sm text-white hover:bg-gray-700" routerLink="/boards">My boards</a></li>
+                    <li><a href="#" class="block p-2 text-sm text-white hover:bg-gray-700">Manage Boards</a></li>
+                </ul>
+            </li>
+            <li>
+                <button (click)="openCommunity()"
+                    class="flex items-center p-2 text-base font-normal rounded-lg hover:bg-gray-700">
+                    <span>Community</span>
+                    <svg class="w-6 h-6 ml-2" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                </button>
+                <ul *ngIf="isCommunityOpen" class="ml-4">
+                    <li><a href="#" class="block p-2 text-sm text-white hover:bg-gray-700">Explore</a></li>
+                    <li><a href="#" class="block p-2 text-sm text-white hover:bg-gray-700">Favorites</a></li>
+                    <li><a href="#" class="block p-2 text-sm text-white hover:bg-gray-700">Members</a></li>
+                </ul>
+            </li>
+            <li>
+                <button routerLink="/profile"
+                    class="flex items-center p-2 text-base font-normal rounded-lg hover:bg-gray-700">
+                    <span>Profile</span>
+                </button>
+            </li>
+            <li>
+                <button (click)="logOut()"
+                    class="flex items-center p-2 text-base font-normal rounded-lg hover:bg-gray-700">
+                    <span>Log out</span>
+                </button>
+            </li>
+        </ul>
+    </div>
+</aside>
