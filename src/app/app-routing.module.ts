@@ -5,6 +5,7 @@ import { RegisterComponent } from './features/login/register/register.component'
 import { HomeComponent } from './features/home/home.component';
 import { ProfileComponent } from './features/profile/profile.component';
 import { BoardUserComponent } from './features/home/board-user/board-user.component';
+import { ManageBoardsComponent } from './features/home/manage-boards/manage-boards.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' }, // Redirige a '/home' cuando se accede a la URL base
@@ -13,6 +14,7 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent }, 
   { path: 'profile', component: ProfileComponent }, 
   { path: 'boards', component: BoardUserComponent },
+  { path: 'manage', component: ManageBoardsComponent },
   // { path: 'board', loadChildren: () => import('./features/home/home.module').then(m => m.HomeModule) },
  
 ];

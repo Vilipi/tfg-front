@@ -14,6 +14,10 @@ import { SidebarComponent } from './shared/components/sidebar/sidebar.component'
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { PopUpComponent } from './shared/components/popup/popup.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatListModule } from '@angular/material/list';
+import { ManageBoardsComponent } from './features/home/manage-boards/manage-boards.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 
 @NgModule({
@@ -24,6 +28,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     HomeComponent,
     ProfileComponent,
     BoardUserComponent,
+    ManageBoardsComponent,
     SidebarComponent,
     PopUpComponent
   
@@ -35,8 +40,10 @@ import { MatDialogModule } from '@angular/material/dialog';
     HttpClientModule,
     BrowserAnimationsModule,
     DragDropModule,
-    MatDialogModule
-    // MatButtonModule,
+    MatDialogModule,
+    MatListModule,
+    MatButtonModule,
+    MatIconModule
   ],
   providers: [],
   bootstrap: [AppComponent]
