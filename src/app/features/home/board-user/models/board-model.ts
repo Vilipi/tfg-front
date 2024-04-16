@@ -9,5 +9,7 @@ export class BoardModel {
     public boardType:string; //publico o privado
     public tasks: TaskModel[];
     public usersFollowing: BoardFollowerModel[];
-    public ranking?: string[];
+    public daysCompleted: number;
+    // public ranking?: string[];
+
 }

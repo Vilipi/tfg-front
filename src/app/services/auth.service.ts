@@ -1,31 +1,30 @@
+// auth.service.ts
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
-
-const AUTH_API = 'http://localhost:8080/api/auth/';
-
-const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-};
+import { UserModel } from '../features/login/models/user-model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  constructor(private http: HttpClient) { }
 
-  login(username: string, password: string): Observable<any> {
-    return this.http.post(AUTH_API + 'signin', {
-      username,
-      password
-    }, httpOptions);
+  user: UserModel;
+
+  constructor() { }
+
+  isLoggedIn(): boolean {
+    this.getLocalStorage();
+    if(this.user){
+      return true; 
+    }
+    else {
+      return false;
+    }
   }
 
-  register(username: string, email: string, password: string): Observable<any> {
-    return this.http.post(AUTH_API + 'signup', {
-      username,
-      email,
-      password
-    }, httpOptions);
+  private getLocalStorage(): void {
+    const userData = localStorage.getItem('userData');
+    if (userData) {
+      this.user = JSON.parse(userData) as UserModel;
+    }
   }
 }

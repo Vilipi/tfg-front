@@ -2,3 +2,9 @@
     background: url("https://static.vecteezy.com/system/resources/previews/006/262/477/non_2x/white-abstract-background-backdrop-for-presentation-design-for-website-free-photo.jpg"),
     rgb(238, 254, 253);
 }
+
+button[type="submit"]:disabled {
+    background-color: #ccc; /* Light gray background */
+    cursor: not-allowed; /* Changes the cursor to indicate the button is not clickable */
+   }
+   

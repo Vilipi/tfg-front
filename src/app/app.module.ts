@@ -8,12 +8,22 @@ import { RegisterComponent } from './features/login/register/register.component'
 import { HomeComponent } from './features/home/home.component';
 import { ProfileComponent } from './features/profile/profile.component';
 import { BoardUserComponent } from './features/home/board-user/board-user.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SidebarComponent } from './shared/components/sidebar/sidebar.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { PopUpComponent } from './shared/components/popup/popup.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatListModule } from '@angular/material/list';
+import { ManageBoardsComponent } from './features/home/manage-boards/manage-boards.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { LoginService } from './features/login/service/login.service';
+import { TaskPopUpComponent } from './features/home/task-popup/task-popup.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { CommunityComponent } from './features/community/community.component';
+import { CardComponent } from './features/community/card/card.component';
 
 
 @NgModule({
@@ -24,8 +34,12 @@ import { MatDialogModule } from '@angular/material/dialog';
     HomeComponent,
     ProfileComponent,
     BoardUserComponent,
+    ManageBoardsComponent,
     SidebarComponent,
-    PopUpComponent
+    PopUpComponent,
+    TaskPopUpComponent,
+    CommunityComponent,
+    CardComponent,
   
   ],
   imports: [
@@ -35,10 +49,16 @@ import { MatDialogModule } from '@angular/material/dialog';
     HttpClientModule,
     BrowserAnimationsModule,
     DragDropModule,
-    MatDialogModule
-    // MatButtonModule,
+    MatDialogModule,
+    MatListModule,
+    MatButtonModule,
+    MatIconModule,
+    ReactiveFormsModule, 
+    MatInputModule,
+    MatFormFieldModule
+    
   ],
-  providers: [],
+  providers: [LoginService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
