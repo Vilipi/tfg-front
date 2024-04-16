@@ -7,8 +7,6 @@ import { LoginService } from '../service/login.service';
 import { UserModel } from '../models/user-model';
 import { catchError, throwError } from 'rxjs';
 import { LoginFacade } from '../service/login.facade';
-import { log } from 'console';
-
 
 @Component({
   selector: 'app-login',
@@ -45,21 +43,10 @@ export class LoginComponent implements OnInit {
       const data = result;
       if (data.isAvailable === true) {
         this.saveDataOnFacade(userData, result);
+        this.saveToLocalStorage(userData, result);
         this.router.navigate(['home']);
       } else {
       }
-    });
-  }
-
-  signIn(): void {
-    this.router.navigate(['home'])
-  }
-
-  openDialog() {
-    const dialogRef = this.dialog.open(PopUpComponent, {
-      data: 'Error, try again',
-      height: '10rem',
-      width: '20rem',
     });
   }
 
@@ -67,5 +54,20 @@ export class LoginComponent implements OnInit {
     const user = result;
     user.password = userData.password;
     this.loginFacade.setLoginFacade(result);
+  }
+
+  saveToLocalStorage(userData: UserModel, result: any) {
+    const user = result;
+    user.password = userData.password;
+    const resultString = JSON.stringify(result);
+    localStorage.setItem('userData', resultString);
+ }
+
+  openDialog() {
+    const dialogRef = this.dialog.open(PopUpComponent, {
+      data: 'Error, try again',
+      height: '10rem',
+      width: '20rem',
+    });
   }
 }

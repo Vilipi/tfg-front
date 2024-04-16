@@ -19,6 +19,11 @@ import { ManageBoardsComponent } from './features/home/manage-boards/manage-boar
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { LoginService } from './features/login/service/login.service';
+import { TaskPopUpComponent } from './features/home/task-popup/task-popup.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { CommunityComponent } from './features/community/community.component';
+import { CardComponent } from './features/community/card/card.component';
 
 
 @NgModule({
@@ -31,7 +36,10 @@ import { LoginService } from './features/login/service/login.service';
     BoardUserComponent,
     ManageBoardsComponent,
     SidebarComponent,
-    PopUpComponent
+    PopUpComponent,
+    TaskPopUpComponent,
+    CommunityComponent,
+    CardComponent,
   
   ],
   imports: [
@@ -45,7 +53,10 @@ import { LoginService } from './features/login/service/login.service';
     MatListModule,
     MatButtonModule,
     MatIconModule,
-    ReactiveFormsModule
+    ReactiveFormsModule, 
+    MatInputModule,
+    MatFormFieldModule
+    
   ],
   providers: [LoginService],
   bootstrap: [AppComponent]

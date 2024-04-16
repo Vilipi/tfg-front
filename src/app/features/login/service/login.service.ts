@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { UserModel } from '../models/user-model';
+import { LoginFacade } from './login.facade';
 
 
 @Injectable({
@@ -10,8 +11,9 @@ import { UserModel } from '../models/user-model';
 export class LoginService {
 
     api = "https://localhost:44369"
+    credentials: UserModel;
 
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient, private loginFacade: LoginFacade) { }
 
     login(credentials: any): Observable<any> {
         const data = `${credentials.email}:${credentials.password}`;
@@ -29,5 +31,13 @@ export class LoginService {
         return this.http.post<any>(`${this.api}/register`, user, {
             headers: { 'Content-Type': 'application/json; charset=utf-8' }
         });
+    }
+
+    getCredentials() {
+        this.loginFacade.getLoginFacade().subscribe(
+            result => {
+                this.credentials = result;
+            }
+        )
     }
 }
