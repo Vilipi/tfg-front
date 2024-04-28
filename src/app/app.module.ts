@@ -24,7 +24,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { CommunityComponent } from './features/community/community.component';
 import { CardComponent } from './features/community/card/card.component';
-
+import { MatTreeModule } from '@angular/material/tree';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,9 @@ import { CardComponent } from './features/community/card/card.component';
     MatIconModule,
     ReactiveFormsModule, 
     MatInputModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatTreeModule,
+    MatCardModule,
     
   ],
   providers: [LoginService],

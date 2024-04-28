@@ -1,13 +1,18 @@
-<app-sidebar></app-sidebar>
-<div class="flex flex-row">
-  <div class="p-8 pt-12 sm:ml-64 basis-3/4">
-    <mat-form-field class="example-form-field" appearance="fill">
-      <mat-label>Clearable input</mat-label>
-      <input matInput type="text" [(ngModel)]="value" (input)="onSearch(value)">
-    </mat-form-field>
-    
- <div *ngFor="let card of filteredCards">
-      <app-card [title]="card.title" [description]="card.description"></app-card>
+<div>
+  <app-sidebar></app-sidebar>
+  <div class="flex flex-row">
+    <div class="p-8 pt-12 sm:ml-64 basis-3/4">
+      <mat-form-field class="example-form-field" appearance="fill">
+        <mat-label>Search board</mat-label>
+        <input matInput type="text" [(ngModel)]="value" (input)="onSearch(value)">
+      </mat-form-field>
+      <div  *ngIf ="cards" class="flex justify-center">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          <div *ngFor="let card of filteredCards">
+            <app-card [data]="card"></app-card>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

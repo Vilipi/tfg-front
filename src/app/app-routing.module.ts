@@ -18,6 +18,7 @@ const routes: Routes = [
   { path: 'boards', component: BoardUserComponent, canActivate: [AuthGuard] },
   { path: 'manage', component: ManageBoardsComponent, canActivate: [AuthGuard] },
   { path: 'community', component: CommunityComponent, canActivate: [AuthGuard] },
+  // { path: 'favorites', component: FavoriteComponent, canActivate: [AuthGuard] },
  
 ];
 
