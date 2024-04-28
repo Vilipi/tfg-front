@@ -53,10 +53,9 @@ export class TaskPopUpComponent implements OnInit {
     }
   }
 
-toggleEditable(): void {
-  this.formEditable = !this.formEditable;
-  this.taskForm.get('name')?.enable();
-  this.taskForm.get('description')?.enable();
-}
-
+  toggleEditable(): void {
+    this.formEditable = !this.formEditable;
+    this.taskForm.get('name')?.enable();
+    this.taskForm.get('description')?.enable();
+  }
 }

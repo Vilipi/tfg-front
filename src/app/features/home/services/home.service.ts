@@ -35,7 +35,7 @@ export class HomeService implements OnInit {
         return this.http.get<any>(`${this.api}/boards/${this.user.id}/all`, { headers });
     }
 
-    getApiTasksfromBoard(boardId: any): Observable<any>{
+    getApiTasksfromBoard(boardId: any): Observable<any> {
         this.getLocalStorage();
 
         const data = `${this.user.email}:${this.user.password}`;
@@ -49,7 +49,7 @@ export class HomeService implements OnInit {
         return this.http.get<any>(`${this.api}/boards/${boardId}/tasks/?userId=${this.user.id}`, { headers });
     }
 
-    refreshApiBoards(){
+    refreshApiBoards() {
         this.getLocalStorage();
 
         const data = `${this.user.email}:${this.user.password}`;
@@ -68,7 +68,7 @@ export class HomeService implements OnInit {
         this.getLocalStorage();
         const data = `${this.user.email}:${this.user.password}`;
         const encodedCredentials = btoa(data);
-        
+
         const headers = new HttpHeaders({
             'Content-Type': 'application/json; charset=utf-8',
             'Authorization': `Basic ${encodedCredentials}`
@@ -83,7 +83,4 @@ export class HomeService implements OnInit {
             this.user = JSON.parse(userData) as UserModel;
         }
     }
-
-    
-
 }

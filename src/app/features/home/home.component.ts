@@ -1,7 +1,7 @@
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Component, OnInit } from '@angular/core';
 import { HomeService } from './services/home.service';
-import { catchError } from 'rxjs';
+import { EMPTY, catchError } from 'rxjs';
 import { BoardModel } from './models/board-model';
 import { TaskModel } from './models/task-model';
 import { BoardFacade } from './services/board.facade';
@@ -38,7 +38,7 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    clearInterval(this.intervalId);
+    // clearInterval(this.intervalId);
   }
 
   drop(event: CdkDragDrop<TaskModel[]>) {
@@ -55,8 +55,6 @@ export class HomeComponent implements OnInit {
     this.check();
   }
 
-
-
   check() {
     if (this.toDoTaskModelList.length == 0) {
       window.alert("No tasks")
@@ -66,7 +64,8 @@ export class HomeComponent implements OnInit {
   getMyBoards(): void {
     this.homeService.getMyApiBoards().pipe(
       catchError(error => {
-        return error;
+        this.openDialog()
+        return EMPTY;
       })
     ).subscribe(result => {
       const apidata: BoardModel[] = result;
@@ -75,7 +74,7 @@ export class HomeComponent implements OnInit {
       apidata.forEach(board => {
         this.boardNameList.push(board.name);
         this.boardList.push(board);
-        this.boardFacade.setBoardListFacade(this.boardList); // set facade
+        this.boardFacade.setBoardListFacade(this.boardList);
         this.calculateTimeLeft();
       })
     });
@@ -83,6 +82,7 @@ export class HomeComponent implements OnInit {
 
   changeBoard(item: any): void {
     this.currentBoard = item
+    this.getTasksfromBoard(item.id);
   }
 
   checkDrop(event: any, item: any) {
@@ -142,26 +142,32 @@ export class HomeComponent implements OnInit {
     const seconds = totalSeconds % 60;
 
     // if (hours === 1 && minutes === 1 && seconds === 34) {      CUANDO LLEHUE A LAS 00:00:00 REFRESH
-      this.timeLeft = `${hours} horas ${minutes} minutos ${seconds} segundos`;
+    this.timeLeft = `${hours} horas ${minutes} minutos ${seconds} segundos`;
 
-      this.intervalId = setInterval(() => {
-        this.calculateTimeLeft();
-      }, 1000);
+    this.intervalId = setInterval(() => {
+      this.calculateTimeLeft();
+    }, 1000);
     // }
   }
 
-  refresh(){
+  refresh() {
     // this.homeService.refreshApiBoards();
   }
 
-  viewDetails(item: TaskModel){
-      const dialogRef = this.dialog.open(TaskPopUpComponent, {
-        data: item,
-        height: '25rem',
-        width: '40rem',
-      });
+  viewDetails(item: TaskModel) {
+    const dialogRef = this.dialog.open(TaskPopUpComponent, {
+      data: item,
+      height: '25rem',
+      width: '40rem',
+    });
   }
 
-
+  openDialog() {
+    const dialogRef = this.dialog.open(PopUpComponent, {
+      data: 'No boards to show',
+      height: '10rem',
+      width: '20rem',
+    });
+  }
 
 }
