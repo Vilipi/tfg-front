@@ -31,7 +31,7 @@ export class CommunityService implements OnInit {
             'Authorization': `Basic ${encodedCredentials}`
         });
 
-        return this.http.get<any>(`${this.api}/boards?id=${this.user.id}`);
+        return this.http.get<any>(`${this.api}/boards/community?id=${this.user.id}`);
     }
 
 

@@ -1,4 +1,8 @@
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import {
+  CdkDragDrop,
+  moveItemInArray,
+  transferArrayItem,
+} from '@angular/cdk/drag-drop';
 import { Component, OnInit } from '@angular/core';
 import { HomeService } from './services/home.service';
 import { EMPTY, catchError } from 'rxjs';
@@ -12,10 +16,9 @@ import { TaskPopUpComponent } from './task-popup/task-popup.component';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
-
   toDo: string[] = [];
   done: string[] = [];
   toDoTaskModelList: TaskModel[] = [];
@@ -27,14 +30,18 @@ export class HomeComponent implements OnInit {
   timeLeft: any;
   intervalId: any;
 
-  constructor(private homeService: HomeService, private boardFacade: BoardFacade, public dialog: MatDialog) { }
+  constructor(
+    private homeService: HomeService,
+    private boardFacade: BoardFacade,
+    public dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     this.getMyBoards();
     if (this.toDo.length) {
       this.check();
     }
-    this.calculateTimeLeft()
+    this.calculateTimeLeft();
   }
 
   ngOnDestroy(): void {
@@ -43,13 +50,17 @@ export class HomeComponent implements OnInit {
 
   drop(event: CdkDragDrop<TaskModel[]>) {
     if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+      moveItemInArray(
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex
+      );
     } else {
       transferArrayItem(
         event.previousContainer.data,
         event.container.data,
         event.previousIndex,
-        event.currentIndex,
+        event.currentIndex
       );
     }
     this.check();
@@ -57,44 +68,50 @@ export class HomeComponent implements OnInit {
 
   check() {
     if (this.toDoTaskModelList.length == 0) {
-      window.alert("No tasks")
+      window.alert('No tasks');
     }
   }
 
   getMyBoards(): void {
-    this.homeService.getMyApiBoards().pipe(
-      catchError(error => {
-        this.openDialog()
-        return EMPTY;
-      })
-    ).subscribe(result => {
-      const apidata: BoardModel[] = result;
-      this.currentBoard = result[0];
-      this.getTasksfromBoard(this.currentBoard.id)
-      apidata.forEach(board => {
-        this.boardNameList.push(board.name);
-        this.boardList.push(board);
-        this.boardFacade.setBoardListFacade(this.boardList);
-        this.calculateTimeLeft();
-      })
-    });
+    this.homeService
+      .getMyApiBoards()
+      .pipe(
+        catchError((error) => {
+          this.openDialog();
+          return EMPTY;
+        })
+      )
+      .subscribe((result) => {
+        if (result.length == 0) {
+          this.openDialog();
+        } else {
+          const apidata: BoardModel[] = result;
+          this.currentBoard = result[0];
+          this.getTasksfromBoard(this.currentBoard.id);
+          apidata.forEach((board) => {
+            this.boardNameList.push(board.name);
+            this.boardList.push(board);
+            this.boardFacade.setBoardListFacade(this.boardList);
+            this.calculateTimeLeft();
+          });
+        }
+      });
   }
 
   changeBoard(item: any): void {
-    this.currentBoard = item
+    this.currentBoard = item;
     this.getTasksfromBoard(item.id);
   }
 
   checkDrop(event: any, item: any) {
     if (event.container.data.length !== event.previousContainer.data.length) {
-
-      if (item.status === "toDo") {
-        item.status = "done";
+      if (item.status === 'toDo') {
+        item.status = 'done';
         this.updateTask(item);
         return;
       }
-      if (item.status === "done") {
-        item.status = "toDo";
+      if (item.status === 'done') {
+        item.status = 'toDo';
         this.updateTask(item);
         return;
       }
@@ -102,37 +119,49 @@ export class HomeComponent implements OnInit {
   }
 
   private getTasksfromBoard(id: number) {
-    this.homeService.getApiTasksfromBoard(id).pipe(
-      catchError(error => {
-        return error;
-      })
-    ).subscribe(result => {
-      this.currentTasks = result;
-      this.setStatusofTasks();
-    });
+    this.homeService
+      .getApiTasksfromBoard(id)
+      .pipe(
+        catchError((error) => {
+          return error;
+        })
+      )
+      .subscribe((result) => {
+        this.currentTasks = result;
+        this.setStatusofTasks();
+      });
   }
 
   private updateTask(task: TaskModel) {
-    this.homeService.updateApiTask(task).pipe(
-      catchError(error => {
-        return error;
-      })
-    ).subscribe(result => {
-      console.log(result)
-    });
+    this.homeService
+      .updateApiTask(task)
+      .pipe(
+        catchError((error) => {
+          return error;
+        })
+      )
+      .subscribe((result) => {
+        console.log(result);
+      });
   }
 
   private setStatusofTasks() {
-    this.toDoTaskModelList = this.currentTasks
-      .filter((task: TaskModel) => task.status === 'toDo')
-    this.doneTaskModelList = this.currentTasks
-      .filter((task: TaskModel) => task.status === 'done')
+    this.toDoTaskModelList = this.currentTasks.filter(
+      (task: TaskModel) => task.status === 'toDo'
+    );
+    this.doneTaskModelList = this.currentTasks.filter(
+      (task: TaskModel) => task.status === 'done'
+    );
   }
 
   private calculateTimeLeft(): void {
     const startDate: Date = new Date();
 
-    const nextDay = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + 1);
+    const nextDay = new Date(
+      startDate.getFullYear(),
+      startDate.getMonth(),
+      startDate.getDate() + 1
+    );
 
     const msUntilNextDay = nextDay.getTime() - startDate.getTime();
 
@@ -164,10 +193,9 @@ export class HomeComponent implements OnInit {
 
   openDialog() {
     const dialogRef = this.dialog.open(PopUpComponent, {
-      data: 'No boards to show',
-      height: '10rem',
-      width: '20rem',
+      data: 'No boards to show, create a board or add some from the community tab!',
+      height: '12rem',
+      width: '25r em',
     });
   }
-
 }
