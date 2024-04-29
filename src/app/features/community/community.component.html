@@ -6,7 +6,7 @@
         <mat-label>Search board</mat-label>
         <input matInput type="text" [(ngModel)]="value" (input)="onSearch(value)">
       </mat-form-field>
-      <div  *ngIf ="cards" class="flex justify-center">
+      <div  *ngIf ="filteredCards" class="flex justify-center">
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           <div *ngFor="let card of filteredCards">
             <app-card [data]="card"></app-card>
