@@ -4,6 +4,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { UserModel } from '../models/user-model';
 import { MatDialog } from '@angular/material/dialog';
 import { PopUpComponent } from 'src/app/shared/components/popup/popup.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -15,13 +16,13 @@ export class RegisterComponent implements OnInit {
   registerForm = new FormGroup({
     nickname: new FormControl('', Validators.required),
     email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('', [Validators.required, Validators.minLength(6)]),
-    passwordConfirm: new FormControl('', [Validators.required, Validators.minLength(6)]),
+    password: new FormControl('', [Validators.required, Validators.minLength(4)]),
+    passwordConfirm: new FormControl('', [Validators.required, Validators.minLength(4)]),
   });
 
  
 
-  constructor(public dialog: MatDialog, private loginService: LoginService) { }
+  constructor(public dialog: MatDialog, private loginService: LoginService, private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -37,6 +38,7 @@ export class RegisterComponent implements OnInit {
 
       this.loginService.register(userData).subscribe(result =>
         console.log(result));
+        this.router.navigate(['/login']);
 
     }
     else {

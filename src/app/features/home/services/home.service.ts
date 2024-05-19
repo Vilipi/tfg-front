@@ -4,6 +4,7 @@ import { LoginService } from '../../login/service/login.service';
 import { Observable } from 'rxjs';
 import { UserModel } from '../../login/models/user-model';
 import { TaskModel } from '../models/task-model';
+import { BoardModel } from '../models/board-model';
 
 
 @Injectable({
@@ -75,6 +76,32 @@ export class HomeService implements OnInit {
         });
 
         return this.http.post<any>(`${this.api}/user/${this.user.id}/board/${dataTosend.boardId}/task/${dataTosend.id}/update`, dataTosend, { headers });
+    }
+
+    createApiBoard(dataToCreate: BoardModel, id: string): Observable<any> {
+        this.getLocalStorage();
+        const data = `${this.user.email}:${this.user.password}`;
+        const encodedCredentials = btoa(data);
+    
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json; charset=utf-8',
+            'Authorization': `Basic ${encodedCredentials}`
+        });
+    
+        return this.http.post<any>(`${this.api}/user/${this.user.id}/addboard`, dataToCreate, { headers });
+    }
+    
+    removeApiBoard(boardId: number): Observable<any> {
+        this.getLocalStorage();
+        const data = `${this.user.email}:${this.user.password}`;
+        const encodedCredentials = btoa(data);
+    
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json; charset=utf-8',
+            'Authorization': `Basic ${encodedCredentials}`
+        });
+    
+        return this.http.delete<any>(`${this.api}/boards/${boardId}/remove?userId=${this.user.id}`, { headers });
     }
 
     getLocalStorage() {

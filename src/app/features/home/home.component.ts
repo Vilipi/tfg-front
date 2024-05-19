@@ -41,12 +41,12 @@ export class HomeComponent implements OnInit {
     if (this.toDo.length) {
       this.check();
     }
-    this.calculateTimeLeft();
+    // this.calculateTimeLeft();
   }
 
-  ngOnDestroy(): void {
-    // clearInterval(this.intervalId);
-  }
+  // ngOnDestroy(): void {
+  //   clearInterval(this.intervalId);
+  // }
 
   drop(event: CdkDragDrop<TaskModel[]>) {
     if (event.previousContainer === event.container) {
@@ -195,7 +195,7 @@ export class HomeComponent implements OnInit {
     const dialogRef = this.dialog.open(PopUpComponent, {
       data: 'No boards to show, create a board or add some from the community tab!',
       height: '12rem',
-      width: '25r em',
+      width: '25rem',
     });
   }
 }
