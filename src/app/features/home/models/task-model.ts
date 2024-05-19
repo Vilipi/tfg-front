@@ -8,6 +8,8 @@ export class TaskModel {
     status: string;
     boardId: number;
     userId: number;
+    timeLength: number;
+    type?: string;
     creatorUserId: number;
     creatorUser: string;
 }

@@ -26,6 +26,9 @@ import { CommunityComponent } from './features/community/community.component';
 import { CardComponent } from './features/community/card/card.component';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatCardModule } from '@angular/material/card';
+import { NewBoardPopUpComponent } from './features/home/manage-boards/newboard-popup/newboard-popup.component';
+import { MatSelectModule } from '@angular/material/select'; // Aquí se importa MatSelectModule
+
 
 @NgModule({
   declarations: [
@@ -41,6 +44,7 @@ import { MatCardModule } from '@angular/material/card';
     TaskPopUpComponent,
     CommunityComponent,
     CardComponent,
+    NewBoardPopUpComponent
   
   ],
   imports: [
@@ -59,6 +63,7 @@ import { MatCardModule } from '@angular/material/card';
     MatFormFieldModule,
     MatTreeModule,
     MatCardModule,
+    MatSelectModule 
     
   ],
   providers: [LoginService],

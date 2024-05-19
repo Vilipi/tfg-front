@@ -11,46 +11,51 @@ import { LoginFacade } from '../service/login.facade';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-
   registerForm = new FormGroup({
     email: new FormControl(''),
     password: new FormControl(''),
   });
 
-  constructor(private router: Router, public dialog: MatDialog, private loginService: LoginService, private loginFacade: LoginFacade) { }
+  constructor(
+    private router: Router,
+    public dialog: MatDialog,
+    private loginService: LoginService,
+    private loginFacade: LoginFacade
+  ) {}
 
-
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   onSubmit() {
     const formValues = this.registerForm.value;
     const userData = new UserModel();
     userData.email = formValues.email;
     userData.password = formValues.password;
-    userData.name = "";
+    userData.name = '';
     userData.id = 0;
 
-    this.loginService.login(userData).pipe(
-      catchError(error => {
-        this.openDialog();
-        return error;
-      })
-    ).subscribe(result => {
-      const data = result;
-      if (data.isAvailable === true) {
-        this.saveDataOnFacade(userData, result);
-        this.saveToLocalStorage(userData, result);
-        this.router.navigate(['home']);
-      } else {
-      }
-    });
+    this.loginService
+      .login(userData)
+      .pipe(
+        catchError((error) => {
+          this.openDialog();
+          return error;
+        })
+      )
+      .subscribe((result) => {
+        const data = result;
+        if (data.isAvailable === true) {
+          this.saveDataOnFacade(userData, result);
+          this.saveToLocalStorage(userData, result);
+          this.router.navigate(['home']);
+        } else {
+        }
+      });
   }
 
-  saveDataOnFacade(userData: UserModel, result: any) : void{
+  saveDataOnFacade(userData: UserModel, result: any): void {
     const user = result;
     user.password = userData.password;
     this.loginFacade.setLoginFacade(result);
@@ -61,7 +66,7 @@ export class LoginComponent implements OnInit {
     user.password = userData.password;
     const resultString = JSON.stringify(result);
     localStorage.setItem('userData', resultString);
- }
+  }
 
   openDialog() {
     const dialogRef = this.dialog.open(PopUpComponent, {
