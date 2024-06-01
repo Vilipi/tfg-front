@@ -12,6 +12,7 @@ import { BoardFacade } from './services/board.facade';
 import { MatDialog } from '@angular/material/dialog';
 import { PopUpComponent } from 'src/app/shared/components/popup/popup.component';
 import { TaskPopUpComponent } from './task-popup/task-popup.component';
+import { NewTaskPopUpComponent } from './new-task-popup/new-task-popup.component';
 
 @Component({
   selector: 'app-home',
@@ -20,15 +21,19 @@ import { TaskPopUpComponent } from './task-popup/task-popup.component';
 })
 export class HomeComponent implements OnInit {
   toDo: string[] = [];
+  inProgress: string[] = [];
   done: string[] = [];
   toDoTaskModelList: TaskModel[] = [];
+  inProgressTaskModelList: TaskModel[] = [];
   doneTaskModelList: TaskModel[] = [];
   boardList: any[] = [];
   boardNameList: string[] = [];
   currentBoard: BoardModel;
-  currentTasks: any = null;
+  currentTasks: any = [];
   timeLeft: any;
   intervalId: any;
+  communityBoard: boolean = false;
+  longBoard: boolean;
 
   constructor(
     private homeService: HomeService,
@@ -67,8 +72,8 @@ export class HomeComponent implements OnInit {
   }
 
   check() {
-    if (this.toDoTaskModelList.length == 0) {
-      window.alert('No tasks');
+    if (this.toDoTaskModelList.length == 0 && this.inProgressTaskModelList.length == 0) {
+      window.alert('Board completed!');
     }
   }
 
@@ -77,59 +82,94 @@ export class HomeComponent implements OnInit {
       .getMyApiBoards()
       .pipe(
         catchError((error) => {
-          this.openDialog();
+          this.openDialog(
+            'No boards to show, create a board or add some from the community tab!'
+          );
           return EMPTY;
         })
       )
       .subscribe((result) => {
         if (result.length == 0) {
-          this.openDialog();
+          this.openDialog(
+            'No boards to show, create a board or add some from the community tab!'
+          );
         } else {
           const apidata: BoardModel[] = result;
           this.currentBoard = result[0];
-          this.getTasksfromBoard(this.currentBoard.id);
+          this.changeBoard(result[0]);
           apidata.forEach((board) => {
             this.boardNameList.push(board.name);
             this.boardList.push(board);
             this.boardFacade.setBoardListFacade(this.boardList);
-            this.calculateTimeLeft();
+            // this.calculateTimeLeft();
           });
         }
       });
   }
 
-  changeBoard(item: any): void {
-    this.currentBoard = item;
-    this.getTasksfromBoard(item.id);
-  }
-
-  checkDrop(event: any, item: any) {
-    if (event.container.data.length !== event.previousContainer.data.length) {
-      if (item.status === 'toDo') {
-        item.status = 'done';
-        this.updateTask(item);
-        return;
-      }
-      if (item.status === 'done') {
-        item.status = 'toDo';
-        this.updateTask(item);
-        return;
-      }
-    }
-  }
-
-  private getTasksfromBoard(id: number) {
+  changeBoard(item: BoardModel): void {
     this.homeService
-      .getApiTasksfromBoard(id)
+      .getApiTasksfromBoard(item.id)
       .pipe(
         catchError((error) => {
-          return error;
+          this.openDialog('No tasks to show, add some task to start!');
+          this.currentBoard = item;
+          this.currentTasks = [];
+          this.longBoard = this.currentBoard.type === 'Short' ? false : true;
+          this.setStatusofTasks();
+          this.checkUserBoard();
+          return EMPTY;
         })
       )
       .subscribe((result) => {
+        this.currentBoard = item;
         this.currentTasks = result;
+        this.longBoard = this.currentBoard.type === 'Short' ? false : true;
         this.setStatusofTasks();
+        this.checkUserBoard();
       });
+  }
+
+  checkDrop(event: any, item: any) {
+    console.log(event, item);
+
+    if (event.container.data.length !== event.previousContainer.data.length) {
+      if (this.longBoard) {
+        // Lógica cuando longBoard es true
+        if (item.status === 'toDo' && event.container.id === 'inProgressList') {
+          item.status = 'inProgress';
+          this.updateTask(item);
+          return;
+        }
+        if (item.status === 'inProgress' && event.container.id === 'doneList') {
+          item.status = 'done';
+          this.updateTask(item);
+          return;
+        }
+        if (item.status === 'done' && event.container.id === 'inProgressList') {
+          item.status = 'inProgress';
+          this.updateTask(item);
+          return;
+        }
+        if (item.status === 'inProgress' && event.container.id === 'todoList') {
+          item.status = 'toDo';
+          this.updateTask(item);
+          return;
+        }
+      } else {
+        // Lógica cuando longBoard es false
+        if (item.status === 'toDo' && event.container.id === 'doneList') {
+          item.status = 'done';
+          this.updateTask(item);
+          return;
+        }
+        if (item.status === 'done' && event.container.id === 'todoList') {
+          item.status = 'toDo';
+          this.updateTask(item);
+          return;
+        }
+      }
+    }
   }
 
   private updateTask(task: TaskModel) {
@@ -149,6 +189,11 @@ export class HomeComponent implements OnInit {
     this.toDoTaskModelList = this.currentTasks.filter(
       (task: TaskModel) => task.status === 'toDo'
     );
+
+    this.inProgressTaskModelList = this.currentTasks.filter(
+      (task: TaskModel) => task.status === 'inProgress'
+    );
+
     this.doneTaskModelList = this.currentTasks.filter(
       (task: TaskModel) => task.status === 'done'
     );
@@ -170,32 +215,59 @@ export class HomeComponent implements OnInit {
     const minutes = Math.floor((totalSeconds % 3600) / 60);
     const seconds = totalSeconds % 60;
 
-    // if (hours === 1 && minutes === 1 && seconds === 34) {      CUANDO LLEHUE A LAS 00:00:00 REFRESH
     this.timeLeft = `${hours} horas ${minutes} minutos ${seconds} segundos`;
 
     this.intervalId = setInterval(() => {
       this.calculateTimeLeft();
     }, 1000);
-    // }
   }
 
   refresh() {
     // this.homeService.refreshApiBoards();
   }
 
-  viewDetails(item: TaskModel) {
+  viewDetails(item: TaskModel, community: boolean) {
     const dialogRef = this.dialog.open(TaskPopUpComponent, {
-      data: item,
+      data: { item, community },
       height: '25rem',
       width: '40rem',
     });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.changeBoard(this.currentBoard);
+      }
+    });
   }
 
-  openDialog() {
+  addTask() {
+    const dialogRef = this.dialog.open(NewTaskPopUpComponent, {
+      data: this.currentBoard,
+      height: '16rem',
+      width: '40rem',
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.changeBoard(this.currentBoard);
+      }
+    });
+  }
+
+  openDialog(message: string) {
     const dialogRef = this.dialog.open(PopUpComponent, {
-      data: 'No boards to show, create a board or add some from the community tab!',
+      data: `${message}`,
       height: '12rem',
       width: '25rem',
     });
+  }
+
+  private checkUserBoard(): void {
+    console.log(this.currentBoard);
+    if (this.currentBoard.creatorUserId !== this.currentBoard.userId) {
+      this.communityBoard = true;
+    } else {
+      this.communityBoard = false;
+    }
   }
 }

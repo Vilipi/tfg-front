@@ -4,6 +4,7 @@ import { EMPTY, catchError } from 'rxjs';
 import { BoardModel } from '../models/board-model';
 import { MatDialog } from '@angular/material/dialog';
 import { NewBoardPopUpComponent } from './newboard-popup/newboard-popup.component';
+import { BoardInfoPopUpComponent } from './board-info-popup/board-info-popup.component';
 
 @Component({
   selector: 'manage-boards',
@@ -16,11 +17,6 @@ export class ManageBoardsComponent implements OnInit {
 
   ngOnInit(): void {
     this.getMyBoards();
-    // console.log(this.items);
-  }
-
-  editItem(item: any) {
-    console.log('Editar:', item);
   }
 
   getMyBoards(): void {
@@ -32,7 +28,7 @@ export class ManageBoardsComponent implements OnInit {
         })
       )
       .subscribe((result: BoardModel[]) => {
-        this.myBoards = result.filter(item => item.isAvailable === true);
+        this.myBoards = result.filter(item => item.isAvailable === true && item.creatorUserId === item.userId);
       });
   }
   
@@ -55,7 +51,22 @@ export class ManageBoardsComponent implements OnInit {
   private openDialog() {
     const dialogRef = this.dialog.open(NewBoardPopUpComponent, {
       data: '',
-      height: '25rem',
+      height: '26rem',
+      width: '40rem',
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.getMyBoards();
+      }
+    });
+  }
+
+  editItem(item: any) {
+    console.log('Editar:', item);
+    const dialogRef = this.dialog.open(BoardInfoPopUpComponent, {
+      data: item.id,
+      height: '26rem',
       width: '40rem',
     });
   }

@@ -3,20 +3,8 @@
         <div class="flex flex-col w-full">
             <div class="flex justify-between w-full">
                 <mat-form-field appearance="fill" class="flex-grow">
-                    <mat-label>Id</mat-label>
-                    <input matInput required type="number" formControlName="id" class="w-full">
-                </mat-form-field>
-            </div>
-            <div class="flex justify-between w-full">
-                <mat-form-field appearance="fill" class="flex-grow">
                     <mat-label>Name</mat-label>
                     <input matInput required type="text" formControlName="name" class="w-full">
-                </mat-form-field>
-            </div>
-            <div class="flex justify-between w-full">
-                <mat-form-field appearance="fill" class="flex-grow">
-                    <mat-label>Status</mat-label>
-                    <input matInput required type="text" formControlName="status" class="w-full">
                 </mat-form-field>
             </div>
             <div class="flex justify-between w-full">
@@ -29,9 +17,7 @@
 
     </form>    
     <mat-dialog-actions class="mt-auto">
-        <button *ngIf="!formEditable && !communityBoard" mat-button (click)="toggleEditable()">Edit</button>
-        <button *ngIf="formEditable && !communityBoard" [disabled]="!taskForm.valid" mat-button (click)="onSave()">Save</button>
-        <button mat-button *ngIf="!communityBoard" (click)="removeTask()">Remove</button>
+        <button mat-button (click)="Create()" [disabled]="!taskForm.valid">Create</button>
         <button mat-button mat-dialog-close>Close</button>
     </mat-dialog-actions>
 </mat-dialog-content>

@@ -1,5 +1,5 @@
 .example-container {
-    width: 22rem;
+    width: 16rem;
     max-width: 100%;
     margin: 0 25px 25px 0;
     display: inline-block;
@@ -58,6 +58,10 @@
   
   .example-box-done {
     background-color: rgb(180, 245, 180);
+  }
+
+  .example-box-in-progress {
+    background-color: rgb(241, 241, 193);
   }
 
   .timer {
