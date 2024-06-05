@@ -20,6 +20,7 @@ import { NewTaskPopUpComponent } from './new-task-popup/new-task-popup.component
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
+  noBoards: boolean = false;
   toDo: string[] = [];
   inProgress: string[] = [];
   done: string[] = [];
@@ -30,8 +31,6 @@ export class HomeComponent implements OnInit {
   boardNameList: string[] = [];
   currentBoard: BoardModel;
   currentTasks: any = [];
-  timeLeft: any;
-  intervalId: any;
   communityBoard: boolean = false;
   longBoard: boolean;
 
@@ -46,12 +45,7 @@ export class HomeComponent implements OnInit {
     if (this.toDo.length) {
       this.check();
     }
-    // this.calculateTimeLeft();
   }
-
-  // ngOnDestroy(): void {
-  //   clearInterval(this.intervalId);
-  // }
 
   drop(event: CdkDragDrop<TaskModel[]>) {
     if (event.previousContainer === event.container) {
@@ -72,7 +66,10 @@ export class HomeComponent implements OnInit {
   }
 
   check() {
-    if (this.toDoTaskModelList.length == 0 && this.inProgressTaskModelList.length == 0) {
+    if (
+      this.toDoTaskModelList.length == 0 &&
+      this.inProgressTaskModelList.length == 0
+    ) {
       window.alert('Board completed!');
     }
   }
@@ -90,6 +87,7 @@ export class HomeComponent implements OnInit {
       )
       .subscribe((result) => {
         if (result.length == 0) {
+          this.noBoards = true;
           this.openDialog(
             'No boards to show, create a board or add some from the community tab!'
           );
@@ -108,66 +106,91 @@ export class HomeComponent implements OnInit {
   }
 
   changeBoard(item: BoardModel): void {
-    this.homeService
-      .getApiTasksfromBoard(item.id)
-      .pipe(
-        catchError((error) => {
-          this.openDialog('No tasks to show, add some task to start!');
+    if (item.type === 'Short' && item.isTimeOver === true) {
+      this.homeService.refreshApiBoards(item.id).subscribe((result) => {
+        // console.log(result);
+        this.homeService
+          .getApiTasksfromBoard(item.id)
+          .pipe(
+            catchError((error) => {
+              this.openDialog('No tasks to show, add some task to start!');
+              this.currentBoard = item;
+              this.currentTasks = [];
+              this.longBoard =
+                this.currentBoard.type === 'Short' ? false : true;
+              this.setStatusofTasks();
+              this.checkUserBoard();
+              return EMPTY;
+            })
+          )
+          .subscribe((result) => {
+            this.currentBoard = item;
+            this.currentTasks = result;
+            this.longBoard = this.currentBoard.type === 'Short' ? false : true;
+            this.setStatusofTasks();
+            this.checkUserBoard();
+          });
+      });
+    } else {
+      this.homeService
+        .getApiTasksfromBoard(item.id)
+        .pipe(
+          catchError((error) => {
+            this.openDialog('No tasks to show, add some task to start!');
+            this.currentBoard = item;
+            this.currentTasks = [];
+            this.longBoard = this.currentBoard.type === 'Short' ? false : true;
+            this.setStatusofTasks();
+            this.checkUserBoard();
+            return EMPTY;
+          })
+        )
+        .subscribe((result) => {
           this.currentBoard = item;
-          this.currentTasks = [];
+          this.currentTasks = result;
           this.longBoard = this.currentBoard.type === 'Short' ? false : true;
           this.setStatusofTasks();
           this.checkUserBoard();
-          return EMPTY;
-        })
-      )
-      .subscribe((result) => {
-        this.currentBoard = item;
-        this.currentTasks = result;
-        this.longBoard = this.currentBoard.type === 'Short' ? false : true;
-        this.setStatusofTasks();
-        this.checkUserBoard();
-      });
+        });
+    }
   }
 
   checkDrop(event: any, item: any) {
-    console.log(event, item);
+    // console.log(event, item);
 
-    if (event.container.data.length !== event.previousContainer.data.length) {
-      if (this.longBoard) {
-        // Lógica cuando longBoard es true
-        if (item.status === 'toDo' && event.container.id === 'inProgressList') {
-          item.status = 'inProgress';
-          this.updateTask(item);
-          return;
-        }
-        if (item.status === 'inProgress' && event.container.id === 'doneList') {
-          item.status = 'done';
-          this.updateTask(item);
-          return;
-        }
-        if (item.status === 'done' && event.container.id === 'inProgressList') {
-          item.status = 'inProgress';
-          this.updateTask(item);
-          return;
-        }
-        if (item.status === 'inProgress' && event.container.id === 'todoList') {
-          item.status = 'toDo';
-          this.updateTask(item);
-          return;
-        }
-      } else {
-        // Lógica cuando longBoard es false
-        if (item.status === 'toDo' && event.container.id === 'doneList') {
-          item.status = 'done';
-          this.updateTask(item);
-          return;
-        }
-        if (item.status === 'done' && event.container.id === 'todoList') {
-          item.status = 'toDo';
-          this.updateTask(item);
-          return;
-        }
+    if (this.longBoard) {
+      // Lógica cuando longBoard es true
+      if (item.status === 'toDo' && event.container.id === 'inProgressList') {
+        item.status = 'inProgress';
+        this.updateTask(item);
+        return;
+      }
+      if (item.status === 'inProgress' && event.container.id === 'doneList') {
+        item.status = 'done';
+        this.updateTask(item);
+        return;
+      }
+      if (item.status === 'done' && event.container.id === 'inProgressList') {
+        item.status = 'inProgress';
+        this.updateTask(item);
+        return;
+      }
+      if (item.status === 'inProgress' && event.container.id === 'todoList') {
+        item.status = 'toDo';
+        this.updateTask(item);
+        return;
+      }
+    } else {
+      // Lógica cuando longBoard es false
+      if (item.status === 'toDo' && event.container.id === 'doneList') {
+        item.status = 'done';
+        this.updateTask(item);
+        return;
+      }
+      if (item.status === 'done' && event.container.id === 'todoList') {
+        item.status = 'toDo';
+        this.updateTask(item);
+        return;
       }
     }
   }
@@ -181,11 +204,12 @@ export class HomeComponent implements OnInit {
         })
       )
       .subscribe((result) => {
-        console.log(result);
+        // console.log(result);
       });
   }
 
   private setStatusofTasks() {
+    // console.log(this.currentTasks);
     this.toDoTaskModelList = this.currentTasks.filter(
       (task: TaskModel) => task.status === 'toDo'
     );
@@ -199,31 +223,14 @@ export class HomeComponent implements OnInit {
     );
   }
 
-  private calculateTimeLeft(): void {
-    const startDate: Date = new Date();
-
-    const nextDay = new Date(
-      startDate.getFullYear(),
-      startDate.getMonth(),
-      startDate.getDate() + 1
-    );
-
-    const msUntilNextDay = nextDay.getTime() - startDate.getTime();
-
-    const totalSeconds = Math.floor(msUntilNextDay / 1000);
-    const hours = Math.floor(totalSeconds / 3600);
-    const minutes = Math.floor((totalSeconds % 3600) / 60);
-    const seconds = totalSeconds % 60;
-
-    this.timeLeft = `${hours} horas ${minutes} minutos ${seconds} segundos`;
-
-    this.intervalId = setInterval(() => {
-      this.calculateTimeLeft();
-    }, 1000);
-  }
 
   refresh() {
-    // this.homeService.refreshApiBoards();
+    this.homeService
+      .refreshApiBoards(this.currentBoard.id)
+      .subscribe((result) => {
+        this.changeBoard(this.currentBoard);
+        // this.getMyBoards();
+      });
   }
 
   viewDetails(item: TaskModel, community: boolean) {
@@ -263,7 +270,7 @@ export class HomeComponent implements OnInit {
   }
 
   private checkUserBoard(): void {
-    console.log(this.currentBoard);
+    // console.log(this.currentBoard);
     if (this.currentBoard.creatorUserId !== this.currentBoard.userId) {
       this.communityBoard = true;
     } else {

@@ -1,0 +1,18 @@
+.title {
+    color: rgb(63, 166, 173);
+    font-weight: 500;
+}
+
+.success-dialog {
+    height: 15rem !important;
+    overflow: hidden; /* Evita el desplazamiento */
+  }
+  
+  .mat-dialog-content {
+    max-height: calc(100% - 64px); /* Ajusta para evitar desbordamiento */
+  }
+  
+  .mat-dialog-container {
+    overflow: hidden; /* Evita el desplazamiento */
+  }
+  

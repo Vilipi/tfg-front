@@ -2,9 +2,13 @@
     width: 20rem;
 }
 
-.card:hover{
+.card:hover {
     transform: scale(1.01);
     transition: 0.5s;
+}
+
+.card:hover p {
+    color: white;
 }
 
 .arrow {
@@ -13,4 +17,8 @@
 
 .heart {
     font-size: 2rem;
+}
+
+.card:hover .card-name {
+    text-decoration: underline;
 }

@@ -6,6 +6,8 @@ export class BoardModel {
     creationDate: Date;
     startDate: Date;
     timeLength: number;
+    endDate: Date;
+    isTimeOver: boolean;
     creatorUserId: number;
     isAvailable: boolean;
     points: number;
@@ -17,4 +19,5 @@ export class BoardModel {
     originalBoardId: number;
     tasks?: TaskModel[];
     isLiked?: boolean = false;
+    followers?: number;
 }

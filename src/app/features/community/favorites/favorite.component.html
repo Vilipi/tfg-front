@@ -2,16 +2,17 @@
   <app-sidebar></app-sidebar>
   <div class="flex flex-row">
     <div class="p-8 pt-12 sm:ml-64 basis-3/4">
-      <mat-form-field class="example-form-field" appearance="fill">
-        <mat-label>Search board</mat-label>
-        <input matInput type="text" [(ngModel)]="value" (input)="onSearch(value)">
-      </mat-form-field>
-      <div  *ngIf ="filteredCards" class="flex justify-center">
+      <div *ngIf="filteredCards" class="flex justify-center">
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           <div *ngFor="let card of filteredCards">
             <app-card [data]="card"></app-card>
           </div>
         </div>
+      </div>
+      <div *ngIf="filteredCards.length > 6" class="flex justify-center mt-4">
+        <mat-paginator [length]="cards.length" [pageSize]="pageSize"
+          (page)="paginate($event)">
+        </mat-paginator>
       </div>
     </div>
   </div>

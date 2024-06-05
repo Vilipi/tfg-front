@@ -1,0 +1,21 @@
+<mat-dialog-content [ngClass]="{'success-dialog': showSuccess}" align="center">
+    <h1 class="title">Pro Account</h1>
+    <div *ngIf="!showSuccess">
+        <p class="text-xl font-semibold mb-4">Unlock premium features for only <span class="text-blue-500">9.99 EUR</span>:</p>
+        <div class="flex justify-center">
+            <ul class="list-disc list-inside text-left">
+                <li>Add more boards</li>
+                <li>Create more boards</li>
+                <li>Publish community boards</li>
+                <li>And much more!</li>
+            </ul>
+        </div>
+        <div class="mt-4">
+            <ngx-paypal [config]="payPalConfig"></ngx-paypal>
+        </div>
+    </div>
+    <p *ngIf="showSuccess" class="text-2xl font-bold mb-4 text-green-500">Payment successfully completed!</p>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+    <button mat-dialog-close class="w-32 py-3 font-medium tracking-widest text-white bg-gray-800 focus:outline-none hover:bg-gray-900 hover:shadow-none rounded">Close</button>
+</mat-dialog-actions>

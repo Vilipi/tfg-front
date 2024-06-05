@@ -36,21 +36,6 @@ export class HomeService implements OnInit {
         return this.http.get<any>(`${this.api}/boards/${boardId}/tasks/?userId=${this.user.id}`, { headers });
     }
 
-    refreshApiBoards() {
-        this.getLocalStorage();
-
-        const data = `${this.user.email}:${this.user.password}`;
-        const encodedCredentials = btoa(data);
-
-        const headers = new HttpHeaders({
-            'Content-Type': 'application/json; charset=utf-8',
-            'Authorization': `Basic ${encodedCredentials}`
-        });
-
-        return this.http.get<any>(`${this.api}/boards/refresh?${this.user.id}`, { headers });
-
-    }
-
     createApiTask(dataToCreate: TaskModel): Observable<any> {
         this.getLocalStorage();
         const data = `${this.user.email}:${this.user.password}`;
@@ -157,6 +142,20 @@ export class HomeService implements OnInit {
         return this.http.get<any>(`${this.api}/boards/${boardId}?userId=${this.user.id}`, { headers });
     }
 
+    refreshApiBoards(boardId: number) {
+        this.getLocalStorage();
+
+        const data = `${this.user.email}:${this.user.password}`;
+        const encodedCredentials = btoa(data);
+
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json; charset=utf-8',
+            'Authorization': `Basic ${encodedCredentials}`
+        });
+
+        return this.http.get<any>(`${this.api}/user/${this.user.id}/boards/${boardId}/refresh`, { headers });
+
+    }
     // LOCAL STORAGE
     getLocalStorage() {
         const userData = localStorage.getItem('userData');

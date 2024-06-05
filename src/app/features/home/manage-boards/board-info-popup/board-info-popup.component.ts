@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { HomeService } from '../../services/home.service';
 import { BoardModel } from '../../models/board-model';
 import { PopUpComponent } from 'src/app/shared/components/popup/popup.component';
+import { LoginFacade } from 'src/app/features/login/service/login.facade';
 
 @Component({
   selector: 'board-info-popup',
@@ -14,12 +15,14 @@ export class BoardInfoPopUpComponent implements OnInit {
   boardData: BoardModel = new BoardModel();
   boardForm: FormGroup;
   isEditable = false;
+  isProUser = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialog: MatDialog,
     private dialogRef: MatDialogRef<BoardInfoPopUpComponent>,
     private fb: FormBuilder,
+    private loginFacade: LoginFacade,
     private homeService: HomeService
   ) {
     this.boardForm = this.fb.group({
@@ -31,6 +34,10 @@ export class BoardInfoPopUpComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loginFacade.getLoginFacade().subscribe((data) => {
+      this.isProUser = data.userType === 'pro' ? true : false;
+    });
+
     this.getBoardInfo();
     console.log(this.data);
   }
@@ -57,7 +64,9 @@ export class BoardInfoPopUpComponent implements OnInit {
     if (this.isEditable) {
       this.boardForm.get('name')?.enable();
       this.boardForm.get('description')?.enable();
-      this.boardForm.get('isPublic')?.enable();
+      if(this.isProUser){
+        this.boardForm.get('isPublic')?.enable();
+      }
     } else {
       this.boardForm.get('name')?.disable();
       this.boardForm.get('description')?.disable();

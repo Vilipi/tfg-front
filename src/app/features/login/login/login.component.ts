@@ -35,6 +35,7 @@ export class LoginComponent implements OnInit {
     userData.password = formValues.password;
     userData.name = '';
     userData.id = 0;
+    userData.userType = '';
 
     this.loginService
       .login(userData)

@@ -1,0 +1,28 @@
+<div>
+  <app-sidebar></app-sidebar>
+  <div class="flex flex-row">
+    <div class="p-8 pt-16 sm:ml-64 basis-3/4">
+      <div class="flex justify-between items-center mb-4"> <!-- Ajustar esta línea -->
+        <mat-form-field appearance="fill">
+          <mat-label>Search board</mat-label>
+          <input matInput type="text" [(ngModel)]="value" (input)="onSearch(value)">
+        </mat-form-field>
+        <button class="w-40 py-3 font-medium tracking-widest text-white bg-[rgb(31,41,55)] focus:outline-none hover:bg-gray-900 hover:shadow-none rounded"
+        (click)="filterByMostFollows()">
+          {{mostFollows === false ? 'Most followed' : 'Show all'}}
+        </button>
+      </div>
+      <div *ngIf="filteredCards" class="flex justify-center">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          <div *ngFor="let card of filteredCards">
+            <app-card [data]="card"></app-card>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="cards.length > 6 && mostFollows === false" class="flex justify-center mt-4">
+        <mat-paginator [length]="cards.length" [pageSize]="pageSize" (page)="paginate($event)">
+        </mat-paginator>
+      </div>
+    </div>
+  </div>
+</div>

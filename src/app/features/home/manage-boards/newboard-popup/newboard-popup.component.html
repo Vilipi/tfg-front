@@ -7,7 +7,7 @@
       </mat-form-field>
     </div>
     <div class="flex justify-between w-full mb-4 items-center">
-      <span class="mr-2">Duration (weeks)</span>
+      <span class="mr-2">Duration ({{this.boardForm.get('timeLength')?.value === 0 ? 'daily': 'weeks'}})</span>
       <mat-slider 
         formControlName="timeLength"
         min="0" 
@@ -35,8 +35,9 @@
     
     <div class="flex items-center w-full mb-4">
       <span class="mr-2">Private</span>
-      <mat-slide-toggle formControlName="type"></mat-slide-toggle>
+      <mat-slide-toggle formControlName="type" class="custom-slide-toggle" [disabled]="!isProUser"></mat-slide-toggle>
       <span class="ml-2">Public</span>
+      <span *ngIf="!isProUser" class="pro-user ml-10 italic">Only pro users</span>
     </div>
   </form>
 

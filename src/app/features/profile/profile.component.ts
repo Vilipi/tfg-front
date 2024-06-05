@@ -1,11 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProfileService } from './services/profile.service';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { UserModel } from '../login/models/user-model';
 
 @Component({
@@ -14,18 +9,20 @@ import { UserModel } from '../login/models/user-model';
   styleUrls: ['./profile.component.scss'],
 })
 export class ProfileComponent implements OnInit {
-  profileForm = new FormGroup({
-    id: new FormControl({ value: '', disabled: true }),
-    name: new FormControl({ value: '', disabled: true }),
-    email: new FormControl({ value: '', disabled: true }, Validators.required),
-    password: new FormControl(
-      { value: '', disabled: true },
-      Validators.required
-    ),
+  profileForm = this.fb.group({
+    id: [{ value: '', disabled: true }],
+    name: [{ value: '', disabled: true }, Validators.required],
+    email: [{ value: '', disabled: true }, [Validators.required, Validators.email]],
+    password: [{ value: '', disabled: true }, [
+      Validators.required,
+      Validators.minLength(6),
+      Validators.pattern(/^(?=.*[!@#$%^&*])/)
+    ]]
   });
 
   user: UserModel;
   formEditable = false;
+  passwordFieldType: string = 'password';
 
   constructor(
     private profileService: ProfileService,
@@ -58,9 +55,9 @@ export class ProfileComponent implements OnInit {
     this.user.password = this.profileForm.get('password')?.value;
 
     this.profileService.updateApiProfile(this.user).subscribe((result) => {
-      if(result.message == "User modified"){
-        console.log(123)
-      };
+      if (result.message == "User modified") {
+          console.log(result.message);
+      }
     });
 
     localStorage.setItem('userData', JSON.stringify(this.user));
@@ -70,5 +67,9 @@ export class ProfileComponent implements OnInit {
     this.formEditable = !this.formEditable;
     this.profileForm.get('name')?.enable();
     this.profileForm.get('password')?.enable();
+  }
+
+  togglePasswordVisibility(): void {
+    this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
   }
 }

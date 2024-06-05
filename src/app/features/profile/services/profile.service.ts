@@ -21,6 +21,7 @@ export class ProfileService implements OnInit {
 
     updateApiProfile(user: UserModel): Observable<any> {
         this.getLocalStorage();
+        debugger
         const data = `${this.user.email}:${this.user.password}`;
         const encodedCredentials = btoa(data);
 

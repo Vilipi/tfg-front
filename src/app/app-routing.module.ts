@@ -6,7 +6,8 @@ import { HomeComponent } from './features/home/home.component';
 import { ProfileComponent } from './features/profile/profile.component';
 import { ManageBoardsComponent } from './features/home/manage-boards/manage-boards.component';
 import { AuthGuard } from './services/auth.guard';
-import { CommunityComponent } from './features/community/community.component';
+import { SocialComponent } from './features/community/social/social.component';
+import { FavoriteComponent } from './features/community/favorites/favorite.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -15,8 +16,8 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] }, 
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] }, 
   { path: 'manage', component: ManageBoardsComponent, canActivate: [AuthGuard] },
-  { path: 'community', component: CommunityComponent, canActivate: [AuthGuard], data: { community: true } },
-  { path: 'favorites', component: CommunityComponent, canActivate: [AuthGuard], data: { favorites: true } },
+  { path: 'community', component: SocialComponent, canActivate: [AuthGuard] },
+  { path: 'favorites', component: FavoriteComponent, canActivate: [AuthGuard] },
  
 ];
 

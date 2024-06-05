@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { HomeService } from '../../services/home.service';
 import { BoardModel } from '../../models/board-model';
 import { PopUpComponent } from 'src/app/shared/components/popup/popup.component';
+import { LoginFacade } from 'src/app/features/login/service/login.facade';
 
 @Component({
   selector: 'newboard-popup',
@@ -13,17 +14,19 @@ import { PopUpComponent } from 'src/app/shared/components/popup/popup.component'
 export class NewBoardPopUpComponent implements OnInit {
   boardData: BoardModel;
   boardForm: FormGroup;
+  isProUser = false;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
     public dialog: MatDialog,
     private dialogRef: MatDialogRef<NewBoardPopUpComponent>,
     private fb: FormBuilder,
+    private loginFacade: LoginFacade,
     private homeService: HomeService) {
 
     this.boardData = data;
 
     this.boardForm = this.fb.group({
-      name: new FormControl({ value: this.boardData.name, disabled: false },[Validators.maxLength(30)]),
+      name: new FormControl({ value: this.boardData.name, disabled: false},[Validators.maxLength(30)]),
       timeLength: new FormControl({ value: this.boardData.timeLength || 0, disabled: false }),
       description: new FormControl({ value: this.boardData.description, disabled: false },[Validators.maxLength(130)]),
       type: new FormControl({ value: this.boardData.type || false, disabled: false }),
@@ -31,7 +34,10 @@ export class NewBoardPopUpComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.data)
+    this.loginFacade.getLoginFacade().subscribe((data) => {
+      this.isProUser = data.userType === 'pro' ? true : false;
+    });
+    console.log(this.isProUser);
   }
 
   onSave(): void {
@@ -40,6 +46,8 @@ export class NewBoardPopUpComponent implements OnInit {
       name: this.boardForm.get('name')?.value,
       creationDate: new Date(),
       startDate: new Date(),
+      endDate: new Date(),
+      isTimeOver: false,
       creatorUserId: 0,
       timeLength: this.boardForm.get('timeLength')?.value,
       userId: 0,

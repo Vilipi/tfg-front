@@ -21,8 +21,6 @@ import { LoginService } from './features/login/service/login.service';
 import { TaskPopUpComponent } from './features/home/task-popup/task-popup.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { CommunityComponent } from './features/community/community.component';
-import { CardComponent } from './features/community/card/card.component';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatCardModule } from '@angular/material/card';
 import { NewBoardPopUpComponent } from './features/home/manage-boards/newboard-popup/newboard-popup.component';
@@ -31,6 +29,12 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSliderModule } from '@angular/material/slider';
 import { BoardInfoPopUpComponent } from './features/home/manage-boards/board-info-popup/board-info-popup.component';
 import { NewTaskPopUpComponent } from './features/home/new-task-popup/new-task-popup.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { CardComponent } from './features/community/card/card.component';
+import { FavoriteComponent } from './features/community/favorites/favorite.component';
+import { SocialComponent } from './features/community/social/social.component';
+import { PaypalComponent } from './paypal/paypal.component';
+import { NgxPayPalModule } from 'ngx-paypal';
 
 
 @NgModule({
@@ -44,11 +48,13 @@ import { NewTaskPopUpComponent } from './features/home/new-task-popup/new-task-p
     SidebarComponent,
     PopUpComponent,
     TaskPopUpComponent,
-    CommunityComponent,
     CardComponent,
     NewBoardPopUpComponent,
     BoardInfoPopUpComponent,
-    NewTaskPopUpComponent
+    NewTaskPopUpComponent,
+    FavoriteComponent,
+    SocialComponent,
+    PaypalComponent
   ],
   imports: [
     BrowserModule,
@@ -68,7 +74,9 @@ import { NewTaskPopUpComponent } from './features/home/new-task-popup/new-task-p
     MatCardModule,
     MatSelectModule,
     MatSlideToggleModule,
-    MatSliderModule
+    MatSliderModule,
+    MatPaginatorModule,
+    NgxPayPalModule
   ],
   providers: [LoginService],
   bootstrap: [AppComponent]
