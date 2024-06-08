@@ -16,10 +16,10 @@ export class PaypalComponent implements OnInit {
   public userData: UserModel;
   //business example
   // sb-c0xef31057865@business.example.com
-  // n,+xvgP8
+  // n,+xvgP82
 
   // sb-pbclh31071733@personal.example.com
-  // 7+?S@vKT
+  // 7+?S@vKT1
 
   constructor(
     public dialogRef: MatDialogRef<PaypalComponent>, private loginFacade: LoginFacade, private profileService: ProfileService) {}
