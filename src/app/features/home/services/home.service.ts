@@ -5,14 +5,15 @@ import { Observable } from 'rxjs';
 import { UserModel } from '../../login/models/user-model';
 import { TaskModel } from '../models/task-model';
 import { BoardModel } from '../models/board-model';
+import { environment } from 'src/environments/environment';
 
 
 @Injectable({
     providedIn: 'root'
 })
 export class HomeService implements OnInit {
-
-    api = "https://localhost:44369";
+    
+    api = environment.API_URL;
     userData: any;
     user: UserModel;
 

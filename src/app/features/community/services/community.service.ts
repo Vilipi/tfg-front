@@ -3,6 +3,7 @@ import { UserModel } from "../../login/models/user-model";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { LoginService } from "../../login/service/login.service";
 import { Observable } from "rxjs";
+import { environment } from "src/environments/environment";
 
 
 @Injectable({
@@ -10,7 +11,7 @@ import { Observable } from "rxjs";
 })
 export class CommunityService implements OnInit {
 
-    api = "https://localhost:44369";
+    api = environment.API_URL;
     userData: any;
     user: UserModel;
 
