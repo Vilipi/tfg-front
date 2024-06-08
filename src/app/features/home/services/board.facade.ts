@@ -10,6 +10,7 @@ import { BoardModel } from "../models/board-model";
 export class BoardFacade {
 
     private boardListFacade: BehaviorSubject<BoardModel[]> = new BehaviorSubject<BoardModel[]>([]);
+    private followingBoards: BehaviorSubject<number> = new BehaviorSubject<number>(0);
 
     public getBoardListFacade(): Observable<BoardModel[]> {
         return this.boardListFacade.asObservable();
@@ -17,5 +18,13 @@ export class BoardFacade {
 
     public setBoardListFacade(data: BoardModel[]): void {
         this.boardListFacade.next(data);
+    }
+
+    public getFollowingBoards(): Observable<number> {
+        return this.followingBoards.asObservable();
+    }
+
+    public setFollowingBoards(data: number): void {
+        this.followingBoards.next(data);
     }
 }

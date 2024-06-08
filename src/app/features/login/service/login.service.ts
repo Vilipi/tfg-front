@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { UserModel } from '../models/user-model';
 import { LoginFacade } from './login.facade';
+import { environment } from 'src/environments/environment';
 
 
 @Injectable({
@@ -10,7 +11,7 @@ import { LoginFacade } from './login.facade';
 })
 export class LoginService {
 
-    api = "https://localhost:44369"
+    api = environment.API_URL;
     credentials: UserModel;
 
     constructor(private http: HttpClient, private loginFacade: LoginFacade) { }

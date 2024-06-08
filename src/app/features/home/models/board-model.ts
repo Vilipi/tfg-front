@@ -1,19 +1,23 @@
 import { TaskModel } from "./task-model";
 
 export class BoardModel {
-    creationDate: string;
-    creatorUserId: number;
-    creatorUser: string;
     id: number;
-    isAvailable: boolean;
-    isPublic: boolean;
     name: string;
+    creationDate: Date;
+    startDate: Date;
+    timeLength: number;
+    endDate: Date;
+    isTimeOver: boolean;
+    creatorUserId: number;
+    isAvailable: boolean;
+    points: number;
+    creatorUser: string;
+    isPublic: boolean;
+    userId: number;
+    type: string;
     description: string;
     originalBoardId: number;
-    points: number;
-    startDate: string;
-    timeLength: number;
-    userId: number;
-    tasks: TaskModel[];
+    tasks?: TaskModel[];
     isLiked?: boolean = false;
+    followers?: number;
 }

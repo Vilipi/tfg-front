@@ -5,6 +5,7 @@ import { UserModel } from '../models/user-model';
 import { MatDialog } from '@angular/material/dialog';
 import { PopUpComponent } from 'src/app/shared/components/popup/popup.component';
 import { Router } from '@angular/router';
+import { EMPTY, catchError } from 'rxjs';
 
 @Component({
   selector: 'app-register',
@@ -16,12 +17,11 @@ export class RegisterComponent implements OnInit {
   registerForm = new FormGroup({
     nickname: new FormControl('', Validators.required),
     email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('', [Validators.required, Validators.minLength(4)]),
-    passwordConfirm: new FormControl('', [Validators.required, Validators.minLength(4)]),
+    password: new FormControl('', [Validators.required, Validators.minLength(6), Validators.pattern(/^(?=.*[!@#$%^&*])/)]),
+    passwordConfirm: new FormControl('', [Validators.required, Validators.minLength(6), Validators.pattern(/^(?=.*[!@#$%^&*])/)]),
   });
 
  
-
   constructor(public dialog: MatDialog, private loginService: LoginService, private router: Router) { }
 
   ngOnInit(): void {
@@ -35,9 +35,26 @@ export class RegisterComponent implements OnInit {
       userData.name = formValues.nickname;
       userData.email = formValues.email;
       userData.password = formValues.password;
+      userData.userType = '';
 
-      this.loginService.register(userData).subscribe(result =>
+      this.loginService.register(userData)
+      .pipe(
+        catchError((error) => {
+          const dialogRef = this.dialog.open(PopUpComponent, {
+            data: 'Error try again',
+            height: '10rem',
+            width: '20rem',
+          });
+          return EMPTY;
+        })
+      )
+      .subscribe(result =>
         console.log(result));
+        const dialogRef = this.dialog.open(PopUpComponent, {
+          data: 'User correctly created',
+          height: '10rem',
+          width: '20rem',
+        });
         this.router.navigate(['/login']);
 
     }

@@ -16,5 +16,4 @@ export class LoginFacade {
     public setLoginFacade(data: UserModel): void {
         this.loginFacade.next(data);
     }
-
 }

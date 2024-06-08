@@ -8,6 +8,10 @@
   zoom: 90%;
 }
 
+.pro-user {
+  color: rgb(63, 166, 173);
+}
+
 ::ng-deep .mat-slider-thumb-label {
   background-color: rgb(79, 101, 132) !important;;
 }
@@ -26,8 +30,4 @@
 
 ::ng-deep .custom-slide-toggle .mat-slide-toggle-bar {
   background-color: rgba(31, 41, 55, 0.5) !important;
-}
-
-.pro-user {
-  color: rgb(63, 166, 173);
 }

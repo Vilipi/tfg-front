@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { BoardInfoPopUpComponent } from './board-info-popup.component';
 
-import { BoardUserComponent } from './board-user.component';
 
-describe('BoardUserComponent', () => {
-  let component: BoardUserComponent;
-  let fixture: ComponentFixture<BoardUserComponent>;
+describe('PopupComponent', () => {
+  let component: BoardInfoPopUpComponent;
+  let fixture: ComponentFixture<BoardInfoPopUpComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ BoardUserComponent ]
+      declarations: [ BoardInfoPopUpComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(BoardUserComponent);
+    fixture = TestBed.createComponent(BoardInfoPopUpComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

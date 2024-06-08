@@ -1,27 +1,41 @@
 <div class="card">
   <div
-    class="w-90 max-w-xs p-2 bg-white border border-gray-200 rounded-lg shadow sm:p-4 dark:bg-gray-800 dark:border-gray-700">
+    class="w-90 max-w-xs p-2 bg-white border border-gray-200 rounded-lg shadow sm:p-4 dark:bg-gray-800 dark:border-gray-700 hover:bg-[rgb(63,166,173)]">
     <div class="grid grid-cols-4 gap-4">
-      <h3 class=" col-span-3 mb-2 text-sm font-semibold text-gray-900 md:text-base dark:text-white">
-        {{data.name}}
+      <h3 class="card-name col-span-3 mb-2 text-sm font-semibold text-gray-900 md:text-base dark:text-white">
+        {{ data.name }}
       </h3>
       <button mat-icon-button (click)="toggleFovorite(data.id)">
-        <mat-icon aria-label="Favorite" class="heart dark:text-gray-200">{{ data.isLiked ? 'favorite' : 'favorite_border' }}</mat-icon>
+        <mat-icon aria-label="Favorite" class="heart dark:text-gray-200">{{
+          data.isLiked ? "favorite" : "favorite_border"
+          }}</mat-icon>
       </button>
     </div>
-    <p class="text-xs font-normal text-gray-500 dark:text-gray-400">Created by {{data.creatorUser}}</p>
-    <p class="text-xs font-normal text-gray-500 dark:text-gray-400">Followers: 123</p>
+    <p class="text-xs font-normal text-gray-500 dark:text-gray-400">
+      Created by {{ data.creatorUser }}
+    </p>
+    <p class="text-xs font-normal text-gray-500 dark:text-gray-400">
+      Followers: {{ data.followers }}
+    </p>
 
-    <h5 class="text-xs font-normal text-gray-500 dark:text-gray-200">Description:</h5>
-    <p class="text-xs font-normal text-gray-500 dark:text-gray-400"> - {{data.description}}</p>
+    <h5 class="text-xs font-normal text-gray-500 dark:text-gray-200">
+      Description:
+    </h5>
+    <p class="text-xs font-normal text-gray-500 dark:text-gray-400">
+      - {{ data.description }}
+    </p>
 
     <p class="text-xs font-normal text-gray-500 dark:text-gray-200" (click)="toggleTasks()">
       Task
-      <mat-icon class="arrow">{{ showTasks ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</mat-icon>
+      <mat-icon class="arrow">{{
+        showTasks ? "keyboard_arrow_up" : "keyboard_arrow_down"
+        }}</mat-icon>
     </p>
     <ul class="my-2 space-y-2" *ngIf="showTasks">
       <li *ngFor="let task of data.tasks">
-        <p class="text-xs font-normal text-gray-500 dark:text-gray-400">{{ task.name }}</p>
+        <p class="text-xs font-normal text-gray-500 dark:text-gray-400">
+          {{ task.name }}
+        </p>
       </li>
     </ul>
   </div>

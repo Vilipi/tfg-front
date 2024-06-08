@@ -1,21 +1,31 @@
 <app-sidebar></app-sidebar>
-<div *ngIf="myBoards" class="flex flex-col items-center justify-center h-screen bg-gray-100">
+<div class="flex justify-center items-center h-screen bg-gray-100">
+  <div class="container flex flex-col items-center">
     <div class="pb-8">
-        <button mat-raised-button color="primary" (click)="createBoard()">Create Board</button>
+      <button mat-raised-button
+        class="w-full py-3 mt-6 font-medium tracking-widest text-white bg-[rgb(31,41,55)] focus:outline-none hover:bg-gray-900 hover:shadow-none rounded"
+        (click)="createBoard()">
+        Create board
+      </button>
     </div>
-    <div class="w-full max-w-md border-2 border-gray-300 rounded-lg shadow-lg">
-        <mat-list class="divide-y divide-gray-200">
-            <mat-list-item *ngFor="let item of myBoards" class="flex justify-between">
-                <div class="flex-grow">{{ item.name }}</div>
-                <div class="flex-shrink">
-                    <button mat-icon-button (click)="editItem(item)" class="text-blue-500 hover:text-blue-700">
-                        <mat-icon>edit</mat-icon>
-                    </button>
-                    <button mat-icon-button (click)="deleteItem(item)" class="text-red-500 hover:text-red-700">
-                        <mat-icon>delete</mat-icon>
-                    </button>
-                </div>
-            </mat-list-item>
-        </mat-list>
-    </div>
+    <div *ngIf="paginatedBoards.length > 0" class="w-full max-w-md border-2 border-gray-300 rounded-lg shadow-lg">
+      <mat-list class="divide-y divide-gray-200">
+        <mat-list-item *ngFor="let item of paginatedBoards" class="flex justify-between">
+          <div class="flex-grow">{{ item.name }}</div>
+          <div class="flex-shrink">
+            <button mat-icon-button (click)="editItem(item)" class="text-[rgb(79,101,132)] hover:text-[rgb(21,31,45)]">
+              <mat-icon>edit</mat-icon>
+            </button>
+            
+            <button mat-icon-button (click)="deleteItem(item)" class="text-[rgb(79,101,132)] hover:text-[rgb(21,31,45)]">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </mat-list-item>
+      </mat-list>
+      <mat-paginator [length]="myBoards.length" [pageSize]="pageSize"
+        [pageSizeOptions]="[7]" (page)="paginate($event)">
+      </mat-paginator>
+    </div>  
+  </div>
 </div>

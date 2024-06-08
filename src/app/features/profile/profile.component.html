@@ -3,7 +3,7 @@
 <div class="p-8 sm:ml-64">
     <div>
         <div class="p-4">
-            <h1 class="text-2xl font-bold mb-4">Edit Profile</h1>
+            <h1 class="title text-2xl font-bold mb-4">Edit Profile</h1>
             <form [formGroup]="profileForm">
                 <div class="flex flex-col w-full">
                     <div class="flex justify-between w-full">
@@ -27,7 +27,10 @@
                     <div class="flex justify-between w-full">
                         <mat-form-field appearance="fill" class="flex-grow">
                             <mat-label>Password</mat-label>
-                            <input matInput required type="password" formControlName="password" class="w-full">
+                            <input [type]="passwordFieldType" matInput required formControlName="password" class="w-full">
+                            <button mat-icon-button matSuffix (click)="togglePasswordVisibility()" type="button">
+                                <mat-icon>{{ passwordFieldType === 'password' ? 'visibility' : 'visibility_off' }}</mat-icon>
+                            </button>
                         </mat-form-field>
                     </div>
                 </div>

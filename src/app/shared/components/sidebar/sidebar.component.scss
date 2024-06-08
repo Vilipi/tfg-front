@@ -2,3 +2,35 @@
     width: 4rem;
     height: 4rem; 
 }
+
+.title{
+    color: rgb(63, 166, 173);
+    // font-weight: bold;
+    font-weight: bold;
+
+}
+
+.up{
+    color: rgb(217, 242, 245);
+    font-weight: 400;
+}
+
+.upgrade-btn {
+    background-color: rgb(63, 166, 173);
+    color: white;
+    border: none;
+    padding: 14px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    transition-duration: 0.4s;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+.upgrade-btn:hover {
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+    scale: 1.05;
+}

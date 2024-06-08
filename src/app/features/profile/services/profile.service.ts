@@ -3,6 +3,7 @@ import { UserModel } from "../../login/models/user-model";
 import { LoginService } from "../../login/service/login.service";
 import { Injectable, OnInit } from "@angular/core";
 import { Observable } from "rxjs";
+import { environment } from "src/environments/environment";
 
 
 @Injectable({
@@ -10,7 +11,7 @@ import { Observable } from "rxjs";
 })
 export class ProfileService implements OnInit {
 
-    api = "https://localhost:44369";
+    api = environment.API_URL;
     userData: any;
     user: UserModel;
 
@@ -21,6 +22,7 @@ export class ProfileService implements OnInit {
 
     updateApiProfile(user: UserModel): Observable<any> {
         this.getLocalStorage();
+        debugger
         const data = `${this.user.email}:${this.user.password}`;
         const encodedCredentials = btoa(data);
 
