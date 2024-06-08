@@ -37,7 +37,7 @@ export class CardComponent implements OnInit {
       this.followingBoards = total;
     });
     if(this.followingBoards >=1 && this.isProUser === false && this.data.isLiked !== true){
-      this.openDialog('You can only add up to 1 board to your favorites, upgrade to plus plan to add more!');
+      this.openDialog('You can only add up to 1 board to your favorites, upgrade to pro plan to add more!');
     } else if(this.followingBoards >=4 && this.isProUser === true && this.data.isLiked !== true){
       this.openDialog('You can only add up to 4 boards to your favorites, unfollow some boards to to add more!');
     } else {
